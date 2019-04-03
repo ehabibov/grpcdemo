@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "proto";
+
+service GreatService {
+    rpc MyRpcCall(Request) returns (Response) {}
+}
+
+message Request {
+    string my_request_message = 1;
+}
+
+message Response {
+    string my_response_message = 1;
+}
+
