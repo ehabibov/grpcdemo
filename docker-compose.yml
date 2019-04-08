@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  server:
+    build: ./server
+    container_name: gserver
+    environment:
+      port: ${server_port}
+    networks:
+      grpc-net:
+        ipv4_address: ${server_ip}
+
+  client:
+    build: ./client
+    environment:
+      ip: ${server_ip}
+      port: ${server_port}
+    container_name: gclient
+    depends_on:
+      - server
+    networks:
+      grpc-net:
+        ipv4_address: ${client_ip}
+
+networks:
+  grpc-net:
+    name: grpc-isolated-net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: ${subnet}

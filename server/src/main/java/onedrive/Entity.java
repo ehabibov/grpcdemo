@@ -1,3 +1,5 @@
+package onedrive;
+
 import org.apache.commons.io.FileUtils;
 import org.nuxeo.onedrive.client.*;
 
@@ -25,7 +27,7 @@ public class Entity {
 
 
         return String.format(
-                "Entity={%s}, name={%s}, description={%s}, size={%s}, link={%s}, createdBy={%s}, createdTime={%s}, " +
+                "onedrive.Entity={%s}, name={%s}, description={%s}, size={%s}, link={%s}, createdBy={%s}, createdTime={%s}, " +
                         "modifiedBy={%s}, modifiedTime={%s}, parentDir={%s}",
                 entity, name, description,size, link, createdBy, createdTime, lastModifiedBy, lastModifiedTime, parent
         );

@@ -1,3 +1,5 @@
+package onedrive;
+
 import org.nuxeo.onedrive.client.*;
 
 import java.io.*;

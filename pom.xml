@@ -16,23 +16,24 @@
 
     <properties>
         <jar-with-dependency-name>${project.artifactId}-${project.version}-jwd</jar-with-dependency-name>
+        <grpc-versions>1.19.0</grpc-versions>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty-shaded</artifactId>
-            <version>1.19.0</version>
+            <version>${grpc-versions}</version>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-protobuf</artifactId>
-            <version>1.19.0</version>
+            <version>${grpc-versions}</version>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-stub</artifactId>
-            <version>1.19.0</version>
+            <version>${grpc-versions}</version>
         </dependency>
     </dependencies>
 
