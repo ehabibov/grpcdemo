@@ -12,7 +12,7 @@
     <artifactId>server</artifactId>
 
     <properties>
-        <mainClass>GrpcServer</mainClass>
+        <mainClass>Main</mainClass>
     </properties>
 
     <repositories>
@@ -31,9 +31,29 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.1.3.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>org.nuxeo.onedrive</groupId>
             <artifactId>onedrive-java-client</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.25.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>2.9.8</version>
         </dependency>
     </dependencies>
 

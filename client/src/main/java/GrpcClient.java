@@ -9,21 +9,24 @@ public class GrpcClient {
 
     private static final Logger logger = Logger.getLogger(GrpcClient.class.getName());
 
-    public static void main(String[] args) {
-        ManagedChannel channel = ManagedChannelBuilder
-                .forAddress(args[0],Integer.parseInt(args[1]))
-                .usePlaintext()
-                .build();
+    private ManagedChannel channel;
+    private FirstServiceGrpc.FirstServiceBlockingStub blockingStub;
+
+    public GrpcClient(String host, int port) {
+        this(ManagedChannelBuilder.forAddress(host,port).usePlaintext());
+    }
+
+    public GrpcClient(ManagedChannelBuilder<?> channelBuilder) {
+        this.channel = channelBuilder.build();
+        this.blockingStub = FirstServiceGrpc.newBlockingStub(channel).withWaitForReady();
         logger.info("Client started...");
+    }
 
-        FirstServiceGrpc.FirstServiceBlockingStub stub = FirstServiceGrpc.newBlockingStub(channel);
+    public static void main(String[] args) {
 
+        GrpcClient client = new GrpcClient(args[0], Integer.parseInt(args[1]));
         Request request = Request.newBuilder().setMyRequestMessage("Request: MESSAGE").build();
-
-        stub.myRpcCall(request);
         logger.info(request.getMyRequestMessage());
-
-        channel.shutdown();
         logger.info("Client terminated...");
     }
 }

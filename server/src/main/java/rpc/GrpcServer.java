@@ -1,6 +1,8 @@
+package rpc;
+
+import io.grpc.BindableService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import rpc.RpcImpl;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -9,11 +11,16 @@ public class GrpcServer {
 
     private static final Logger logger = Logger.getLogger(GrpcServer.class.getName());
 
-    public static void main(String[] args) {
-        Server server = ServerBuilder
-                .forPort(Integer.parseInt(args[0]))
-                .addService(new RpcImpl()).build();
+    private Server server;
 
+    public GrpcServer(int port, BindableService service) {
+        this.server = ServerBuilder
+                .forPort(port)
+                .addService(service)
+                .build();
+    }
+
+    public void startServer(){
         try {
             server.start();
             logger.info("Server started...");

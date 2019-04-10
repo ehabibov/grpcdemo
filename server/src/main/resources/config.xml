@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="person-rest.properties"/>
+    </bean>
+
+    <bean id="personRestClient" class="rest.PersonRestClient">
+        <constructor-arg name="target" value="${rest.target}"/>
+        <constructor-arg name="path" value="${rest.path}"/>
+        <constructor-arg name="secretName" value="${header.secret.name}"/>
+        <constructor-arg name="secretValue" value="${header.secret.value}"/>
+    </bean>
+
+    <bean id="server" class="rpc.GrpcServer">
+        <constructor-arg name="port" value="55000"/>
+        <constructor-arg name="service" ref="rpcImpl"/>
+    </bean>
+
+    <bean id="rpcImpl" class="rpc.services.RpcImpl"/>
+
+</beans>

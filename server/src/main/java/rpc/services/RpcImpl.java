@@ -1,4 +1,4 @@
-package rpc;
+package rpc.services;
 
 import io.grpc.stub.StreamObserver;
 import proto.FirstServiceGrpc;
