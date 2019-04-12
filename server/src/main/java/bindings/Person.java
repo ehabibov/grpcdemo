@@ -207,30 +207,13 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "id='" + id + '\'' +
-                ", index=" + index +
-                ", guid='" + guid + '\'' +
-                ", isActive=" + isActive +
-                ", name=" + name.toString() +
-                ", pictureUrl='" + picture + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", company='" + company + '\'' +
-                ", age=" + age +
-                ", eyeColor='" + eyeColor + '\'' +
-                ", about='" + about + '\'' +
-                ", balance='" + balance + '\'' +
-                ", registered=" + registered +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                ", tags=" + tags +
-                ", greeting='" + greeting + '\'' +
-                ", friends=" + friends.toString() +
-                ", favouriteFruit='" + favoriteFruit + '\'' +
-                ", range=" + range +
-                '}';
+        return String.format(
+        "Person[id=%s, index=%s, guid=%s, isActive=%s, %s, pictureUrl=%s, email=%s, phone=%s, address=[%s], " +
+                "company=%s, age=%s, eyeColor=%s, about=[%s], balance=%s, registered=[%s], longitude=%s, " +
+                "latitude=%s, tags=%s, greeting=[%s], friends=%s, favouriteFruit=%s, range=%s]",
+        id, index, guid, isActive, name, picture, email, phone, address, company, age, eyeColor, about,
+                balance, registered, longitude, latitude, tags, greeting, friends, favoriteFruit, range
+        );
     }
 
     public static class Name {
@@ -258,10 +241,7 @@ public class Person {
 
         @Override
         public String toString() {
-            return "Name{" +
-                    "last='" + last + '\'' +
-                    ", first='" + first + '\'' +
-                    '}';
+            return String.format("Name=[last=%s, first=%s]", last, first);
         }
     }
 
@@ -290,10 +270,7 @@ public class Person {
 
         @Override
         public String toString() {
-            return "Friend{" +
-                    "id=" + id +
-                    ", name='" + name + '\'' +
-                    '}';
+            return String.format("Friend=[id=%s, name=%s]", id, name);
         }
     }
 }

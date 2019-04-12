@@ -3,15 +3,15 @@ syntax = "proto3";
 option java_multiple_files = true;
 option java_package = "proto";
 
-service FirstService {
-    rpc MyRpcCall(Request) returns (Response) {}
+service GService {
+    rpc Greets(ClientHello) returns (ServerHello) {}
 }
 
-message Request {
-    string my_request_message = 1;
+message ClientHello {
+    string client_message = 1;
 }
 
-message Response {
-    string my_response_message = 1;
+message ServerHello {
+    string server_message = 1;
 }
 

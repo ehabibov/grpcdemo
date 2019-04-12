@@ -20,14 +20,23 @@ public class GrpcServer {
                 .build();
     }
 
-    public void startServer(){
+    public void start(){
         try {
             server.start();
             logger.info("Server started...");
-            server.awaitTermination();
-            logger.info("Server terminated...");
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void blockUntilShutdown(){
+        if (server != null) {
+            try {
+                server.awaitTermination();
+                logger.info("Server terminated...");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -12,7 +12,7 @@
     <artifactId>client</artifactId>
 
     <properties>
-        <mainClass>GrpcClient</mainClass>
+        <mainClass>Main</mainClass>
     </properties>
 
     <dependencies>

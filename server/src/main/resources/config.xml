@@ -4,7 +4,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="person-rest.properties"/>
+        <property name="locations">
+            <list>
+                <value>server.properties</value>
+                <value>person-rest.properties</value>
+            </list>
+        </property>
     </bean>
 
     <bean id="personRestClient" class="rest.PersonRestClient">
@@ -15,10 +20,10 @@
     </bean>
 
     <bean id="server" class="rpc.GrpcServer">
-        <constructor-arg name="port" value="55000"/>
+        <constructor-arg name="port" value="${server.port:55000}"/>
         <constructor-arg name="service" ref="rpcImpl"/>
     </bean>
 
-    <bean id="rpcImpl" class="rpc.services.RpcImpl"/>
+    <bean id="rpcImpl" class="rpc.services.GService"/>
 
 </beans>

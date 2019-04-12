@@ -10,14 +10,15 @@ public class Main {
 
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
-        PersonRestClient client = (PersonRestClient) ctx.getBean("personRestClient");
-        List<Person> persons = client.getPersons();
+        PersonRestClient restClient = (PersonRestClient) ctx.getBean("personRestClient");
+        GrpcServer server = (GrpcServer) ctx.getBean("server");
+        List<Person> persons = restClient.getPersons();
 
         for (Person person : persons){
-            System.out.println(person.getName().toString());
+            System.out.println(person.toString());
         }
 
-        GrpcServer server = (GrpcServer) ctx.getBean("server");
-        server.startServer();
+        server.start();
+        server.blockUntilShutdown();
     }
 }
