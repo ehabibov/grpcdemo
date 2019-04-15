@@ -5,6 +5,7 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class GrpcServer {
@@ -13,11 +14,12 @@ public class GrpcServer {
 
     private Server server;
 
-    public GrpcServer(int port, BindableService service) {
-        this.server = ServerBuilder
-                .forPort(port)
-                .addService(service)
-                .build();
+    public GrpcServer(int port, List<BindableService> services) {
+        ServerBuilder serverBuilder = ServerBuilder.forPort(port);
+        for (BindableService service : services){
+            serverBuilder.addService(service);
+        }
+        this.server = serverBuilder.build();
     }
 
     public void start(){

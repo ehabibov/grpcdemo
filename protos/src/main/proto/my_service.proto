@@ -4,7 +4,12 @@ option java_multiple_files = true;
 option java_package = "proto";
 
 service GService {
+
     rpc Greets(ClientHello) returns (ServerHello) {}
+
+    rpc ListPeople(BalanceRange) returns (stream Person) {}
+
+    rpc ListFriends(Person) returns (stream Friend) {}
 }
 
 message ClientHello {
@@ -15,3 +20,25 @@ message ServerHello {
     string server_message = 1;
 }
 
+message Person {
+    int32 id = 1;
+    string name = 2;
+    int32 age = 3;
+    string email = 4;
+    string address = 5;
+    string company = 6;
+}
+
+message People {
+    repeated Person person = 1;
+}
+
+message Friend {
+    string last = 1;
+    string first = 2;
+}
+
+message BalanceRange {
+    int32 lowBalanceThreshold = 1;
+    int32 highBalanceThreshold = 2;
+}

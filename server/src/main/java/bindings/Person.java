@@ -216,6 +216,10 @@ public class Person {
         );
     }
 
+    public String getFullName() {
+        return String.format("%s %s",name.getLast(),name.getFirst());
+    }
+
     public static class Name {
 
         private String last;

@@ -6,32 +6,24 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 
-public class PersonRestClient {
+import java.util.ArrayList;
 
-    private String target;
-    private String path;
-    private String secretName;
-    private String secretValue;
+public class PeopleRestClient extends AbstractRestClient{
 
-    public PersonRestClient(String target, String path, String secretName, String secretValue) {
-        this.target = target;
-        this.path = path;
-        this.secretName = secretName;
-        this.secretValue = secretValue;
+    public PeopleRestClient(String target, String path, String secretName, String secretValue) {
+        super(target, path, secretName, secretValue);
     }
 
-    public List<Person> getPersons() {
+    public ArrayList<Person> getPeople() {
         Client client = ClientBuilder.newClient();
-        List<Person> persons = ClientBuilder.newClient()
+        ArrayList<Person> persons = ClientBuilder.newClient()
                 .register(JacksonJsonProvider.class)
                 .target(this.target)
                 .path(this.path)
                 .request(MediaType.APPLICATION_JSON)
                 .header(this.secretName, this.secretValue)
-                .get(new GenericType<List<Person>>() {});
-
+                .get(new GenericType<ArrayList<Person>>() {});
         client.close();
         return persons;
     }

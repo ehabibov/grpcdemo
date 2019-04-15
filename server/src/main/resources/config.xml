@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/util
+                            http://www.springframework.org/schema/util/spring-util.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -12,7 +15,9 @@
         </property>
     </bean>
 
-    <bean id="personRestClient" class="rest.PersonRestClient">
+    <bean id="contextApplicationContextProvider" class="context.AppContextProvider"/>
+
+    <bean id="personRestClient" class="rest.PeopleRestClient">
         <constructor-arg name="target" value="${rest.target}"/>
         <constructor-arg name="path" value="${rest.path}"/>
         <constructor-arg name="secretName" value="${header.secret.name}"/>
@@ -21,9 +26,13 @@
 
     <bean id="server" class="rpc.GrpcServer">
         <constructor-arg name="port" value="${server.port:55000}"/>
-        <constructor-arg name="service" ref="rpcImpl"/>
+        <constructor-arg name="services" ref="rpc-services"/>
     </bean>
 
-    <bean id="rpcImpl" class="rpc.services.GService"/>
+    <util:list id="rpc-services" value-type="io.grpc.BindableService">
+        <ref bean="gService"/>
+    </util:list>
+
+    <bean id="gService" class="rpc.services.GService"/>
 
 </beans>
