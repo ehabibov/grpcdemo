@@ -67,7 +67,8 @@ public class GrpcClient {
 
             @Override
             public void onNext(Friend friend) {
-                String responseString = String.format("Friend=[id=%d, name=%s]",  friend.getId(), friend.getName());
+                String responseString = String.format("Friend=[id=%d, name=%s, Person=[index=%d, name=%s]",
+                        friend.getId(), friend.getName(),friend.getPersonId().getId(), friend.getPersonId().getName());
                 logger.info(responseString);
             }
 
@@ -83,9 +84,10 @@ public class GrpcClient {
             }
         });
 
-        for (int i = 0; i < indexes.length; i++) {
-            PersonIndex index = PersonIndex.newBuilder().setIndex(i).build();
-            requestObserver.onNext(index);
+        for (int index : indexes) {
+            PersonIndex personIndex = PersonIndex.newBuilder().setIndex(index).build();
+            requestObserver.onNext(personIndex);
+            logger.info("Looking friends of person with index=" + index);
         }
         requestObserver.onCompleted();
         finishLatch.await(1, TimeUnit.MINUTES);

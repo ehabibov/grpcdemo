@@ -67,7 +67,12 @@ public class GService extends GServiceImplBase {
                 for (bindings.Person personBinding : people){
                     if (personBinding.getIndex() == personIndex.getIndex()){
                         for (Person.Friend friendBinding : personBinding.getFriends()){
+                            proto.PersonID personId = proto.PersonID.newBuilder()
+                                    .setId(personBinding.getIndex())
+                                    .setName(personBinding.getFullName())
+                                    .build();
                             proto.Friend friend = proto.Friend.newBuilder()
+                                    .setPersonId(personId)
                                     .setName(friendBinding.getName())
                                     .setId(friendBinding.getId())
                                     .build();

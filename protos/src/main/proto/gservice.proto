@@ -38,7 +38,13 @@ message PersonIndex {
     int32 index = 1;
 }
 
+message PersonID {
+    int32 id = 1;
+    string name = 2;
+}
+
 message Friend {
     int32 id = 1;
     string name = 2;
+    PersonID personId = 3;
 }
