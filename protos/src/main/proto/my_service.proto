@@ -9,7 +9,7 @@ service GService {
 
     rpc ListPeople(BalanceRange) returns (stream Person) {}
 
-    rpc ListFriends(Person) returns (stream Friend) {}
+    rpc ListFriends(stream PersonIndex) returns (stream Friend) {}
 }
 
 message ClientHello {
@@ -18,6 +18,11 @@ message ClientHello {
 
 message ServerHello {
     string server_message = 1;
+}
+
+message BalanceRange {
+    int32 lowBalanceThreshold = 1;
+    int32 highBalanceThreshold = 2;
 }
 
 message Person {
@@ -29,16 +34,11 @@ message Person {
     string company = 6;
 }
 
-message People {
-    repeated Person person = 1;
+message PersonIndex {
+    int32 index = 1;
 }
 
 message Friend {
-    string last = 1;
-    string first = 2;
-}
-
-message BalanceRange {
-    int32 lowBalanceThreshold = 1;
-    int32 highBalanceThreshold = 2;
+    int32 id = 1;
+    string name = 2;
 }

@@ -2,9 +2,13 @@ package rpc;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.stub.StreamObserver;
 import proto.*;
 
 import java.util.Iterator;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class GrpcClient {
@@ -13,6 +17,7 @@ public class GrpcClient {
 
     private ManagedChannel channel;
     private GServiceGrpc.GServiceBlockingStub blockingStub;
+    private GServiceGrpc.GServiceStub asyncStub;
 
     public GrpcClient(String host, int port) {
         this(ManagedChannelBuilder.forAddress(host,port).usePlaintext());
@@ -21,6 +26,7 @@ public class GrpcClient {
     public GrpcClient(ManagedChannelBuilder<?> channelBuilder) {
         this.channel = channelBuilder.build();
         this.blockingStub = GServiceGrpc.newBlockingStub(channel).withWaitForReady();
+        this.asyncStub = GServiceGrpc.newStub(channel).withWaitForReady();
         logger.info("Client started...");
     }
 
@@ -51,5 +57,37 @@ public class GrpcClient {
                     person.getId(), person.getName(), person.getAge(), person.getEmail(), person.getCompany());
             logger.info(responseString);
         }
+    }
+
+
+    public void sendPeopleIndexes(int[] indexes) throws Exception {
+        final CountDownLatch finishLatch = new CountDownLatch(1);
+
+        StreamObserver<PersonIndex> requestObserver = asyncStub.listFriends(new StreamObserver<Friend>() {
+
+            @Override
+            public void onNext(Friend friend) {
+                String responseString = String.format("Friend=[id=%d, name=%s]",  friend.getId(), friend.getName());
+                logger.info(responseString);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                logger.log(Level.WARNING, "Error during receiving friends", throwable);
+                finishLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                finishLatch.countDown();
+            }
+        });
+
+        for (int i = 0; i < indexes.length; i++) {
+            PersonIndex index = PersonIndex.newBuilder().setIndex(i).build();
+            requestObserver.onNext(index);
+        }
+        requestObserver.onCompleted();
+        finishLatch.await(1, TimeUnit.MINUTES);
     }
 }

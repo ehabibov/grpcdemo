@@ -5,10 +5,11 @@ import rpc.GrpcClient;
 
 public class ClientMain {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
         GrpcClient client = (GrpcClient) ctx.getBean("client");
         client.sendHello();
         client.sendBalanceRequest(2000, 3000);
+        client.sendPeopleIndexes(new int[] {3,5,7});
     }
 }
