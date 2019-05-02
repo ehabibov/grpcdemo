@@ -6,7 +6,7 @@ import rpc.GrpcClient;
 public class ClientMain {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("client-config.xml");
         GrpcClient client = (GrpcClient) ctx.getBean("client");
         client.sendHello();
         client.sendBalanceRequest(2000, 3000);

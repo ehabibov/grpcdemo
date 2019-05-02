@@ -32,6 +32,7 @@ message Person {
     string email = 4;
     string address = 5;
     string company = 6;
+    string balance = 7;
 }
 
 message PersonIndex {

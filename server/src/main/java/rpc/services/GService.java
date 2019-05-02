@@ -48,6 +48,7 @@ public class GService extends GServiceImplBase {
                         .setEmail(personBinding.getEmail())
                         .setAddress(personBinding.getAddress())
                         .setCompany(personBinding.getCompany())
+                        .setBalance(balance)
                         .build();
                 responseObserver.onNext(personProto);
                 logger.info("Person info sent: " + personProto.getName());

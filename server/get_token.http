@@ -1,7 +1,0 @@
-GET https://login.live.com/oauth20_authorize.srf
-    ?client_id=7c86b650-b174-4686-9809-2f683c87df78
-    &scope=onedrive.readonly
-    &response_type=token
-    &redirect_uri=https://login.live.com/oauth20_desktop.srf
-
-###

@@ -1,7 +1,8 @@
-package rpc;
+package client;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.stub.StreamObserver;
 import proto.*;
 
@@ -12,23 +13,48 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GrpcClient {
+public class Client {
 
-    private static final Logger logger = Logger.getLogger(GrpcClient.class.getName());
+    private static final Logger logger = Logger.getLogger(Client.class.getName());
 
     private ManagedChannel channel;
     private GServiceGrpc.GServiceBlockingStub blockingStub;
     private GServiceGrpc.GServiceStub asyncStub;
+    private ManagedChannelBuilder channelBuilder;
 
-    public GrpcClient(String host, int port) {
-        this(ManagedChannelBuilder.forAddress(host,port).usePlaintext());
+    public Client(String host, int port) {
+        this.channelBuilder = ManagedChannelBuilder
+                .forAddress(host,port)
+                .usePlaintext();
     }
 
-    public GrpcClient(ManagedChannelBuilder<?> channelBuilder) {
+    public Client(String name) {
+        this.channelBuilder = InProcessChannelBuilder
+                .forName(name)
+                .directExecutor()
+                .usePlaintext();
+    }
+
+    public Client(ManagedChannelBuilder<?> channelBuilder) {
         this.channel = channelBuilder.build();
-        this.blockingStub = GServiceGrpc.newBlockingStub(channel).withWaitForReady();
-        this.asyncStub = GServiceGrpc.newStub(channel).withWaitForReady();
+        this.blockingStub = GServiceGrpc.newBlockingStub(channel)
+                .withDeadlineAfter(20,TimeUnit.SECONDS).withWaitForReady();
+        this.asyncStub = GServiceGrpc.newStub(channel)
+                .withDeadlineAfter(20,TimeUnit.SECONDS).withWaitForReady();
         logger.info("Client started...");
+    }
+
+    public void start() {
+        this.channel = this.channelBuilder.build();
+        this.blockingStub = GServiceGrpc.newBlockingStub(this.channel)
+                .withDeadlineAfter(20,TimeUnit.SECONDS).withWaitForReady();
+        this.asyncStub = GServiceGrpc.newStub(this.channel)
+                .withDeadlineAfter(20,TimeUnit.SECONDS).withWaitForReady();
+        logger.info("Client started... ");
+    }
+
+    public void shutdown(){
+        this.channel.shutdown();
     }
 
     public ServerHello sendHello(){
@@ -56,8 +82,8 @@ public class GrpcClient {
         while (responseIterator.hasNext()){
             Person person = responseIterator.next();
             people.add(person);
-            String responseString = String.format("Received response: ID=[%d], name=[%s], age=[%d], email=[%s], company=[%s]",
-                    person.getId(), person.getName(), person.getAge(), person.getEmail(), person.getCompany());
+            String responseString = String.format("Received response: ID=[%d], name=[%s], age=[%d], email=[%s], company=[%s], balance=[%s]",
+                    person.getId(), person.getName(), person.getAge(), person.getEmail(), person.getCompany(), person.getBalance());
             logger.info(responseString);
         }
         return people;

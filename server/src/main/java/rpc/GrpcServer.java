@@ -3,9 +3,11 @@ package rpc;
 import io.grpc.BindableService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import io.grpc.inprocess.InProcessServerBuilder;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class GrpcServer {
@@ -16,6 +18,16 @@ public class GrpcServer {
 
     public GrpcServer(int port, List<BindableService> services) {
         ServerBuilder serverBuilder = ServerBuilder.forPort(port);
+        for (BindableService service : services){
+            serverBuilder.addService(service);
+        }
+        this.server = serverBuilder.build();
+    }
+
+    public GrpcServer(String name, List<BindableService> services) {
+        InProcessServerBuilder serverBuilder = InProcessServerBuilder
+                .forName(name)
+                .directExecutor();
         for (BindableService service : services){
             serverBuilder.addService(service);
         }
@@ -34,7 +46,8 @@ public class GrpcServer {
     public void blockUntilShutdown(){
         if (server != null) {
             try {
-                server.awaitTermination();
+                logger.info("Await termination...");
+                server.awaitTermination(20, TimeUnit.SECONDS);
                 logger.info("Server terminated...");
             } catch (InterruptedException e) {
                 e.printStackTrace();
