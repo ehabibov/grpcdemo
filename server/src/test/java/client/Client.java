@@ -57,6 +57,10 @@ public class Client {
         this.channel.shutdown();
     }
 
+    public ManagedChannel getChannelInstance(){
+        return this.channel;
+    }
+
     public ServerHello sendHello(){
         String requestMessage = "Request: Hi!";
         ClientHello request = ClientHello.newBuilder().setClientMessage(requestMessage).build();

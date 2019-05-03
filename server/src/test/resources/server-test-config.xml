@@ -22,6 +22,7 @@
         <constructor-arg name="path" value="${rest.path}"/>
         <constructor-arg name="secretName" value="${header.secret.name}"/>
         <constructor-arg name="secretValue" value="${header.secret.value}"/>
+        <constructor-arg name="file" value="data/people.json"/>
     </bean>
 
     <bean id="server" class="rpc.GrpcServer">

@@ -1,18 +1,18 @@
 package unit;
 
-import client.Client;
 import dataproviders.BalanceRangeProvider;
 import dataproviders.PeopleIdProvider;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.rules.SpringClassRule;
-import org.springframework.test.context.junit4.rules.SpringMethodRule;
+import client.Client;
 import rules.ClientRule;
 import rules.ServerRule;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import org.junit.*;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
+import io.grpc.testing.GrpcCleanupRule;
 import proto.Friend;
 import proto.Person;
 import proto.ServerHello;
@@ -22,23 +22,18 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnitParamsRunner.class)
-@ContextConfiguration(locations = {"classpath:server-test-config.xml", "classpath:client-test-config.xml"})
 public class ServerTest {
 
-    private static ServerRule serverRule = new ServerRule();
-    private static ClientRule clientRule = new ClientRule();
+    private static GrpcCleanupRule cleanupRule = new GrpcCleanupRule();
+    private static ServerRule serverRule = new ServerRule(cleanupRule);
+    private static ClientRule clientRule = new ClientRule(cleanupRule);
     private static Client client;
 
-    @ClassRule public static RuleChain chain = RuleChain.outerRule(new SpringClassRule()).around(serverRule).around(clientRule);
-
-    //@ClassRule
-    //public static RuleChain chain = RuleChain.outerRule(serverRule).around(clientRule);
-
-    @Rule
-    public final SpringMethodRule springMethodRule = new SpringMethodRule();
-
-    //@Rule
-    //public final GrpcCleanupRule grpcCleanupRule = new GrpcCleanupRule();
+    @ClassRule
+    public static RuleChain chain = RuleChain
+            .outerRule(cleanupRule)
+            .around(serverRule)
+            .around(clientRule);
 
     @BeforeClass
     public static void setUp() {
@@ -47,7 +42,6 @@ public class ServerTest {
 
     @Test()
     public void testHello(){
-        client = clientRule.getClientInstance();
         ServerHello hello = client.sendHello();
         assertEquals(hello.getServerMessage(), "Response: Hello!");
     }

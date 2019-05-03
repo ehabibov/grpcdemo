@@ -54,4 +54,8 @@ public class GrpcServer {
             }
         }
     }
+
+    public Server getServerInstance(){
+        return this.server;
+    }
 }
