@@ -13,7 +13,7 @@
     </bean>
 
     <!--<bean id="client" class="client.Client">
-        <constructor-arg name="name" value="MYNAME"/>
+        <constructor-arg name="serverName" value="Server0"/>
     </bean>-->
 
 </beans>

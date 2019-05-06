@@ -28,9 +28,9 @@ public class Client {
                 .usePlaintext();
     }
 
-    public Client(String name) {
+    public Client(String serverName) {
         this.channelBuilder = InProcessChannelBuilder
-                .forName(name)
+                .forName(serverName)
                 .directExecutor()
                 .usePlaintext();
     }

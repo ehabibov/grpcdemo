@@ -17,7 +17,8 @@ public class GrpcServer {
     private Server server;
 
     public GrpcServer(int port, List<BindableService> services) {
-        ServerBuilder serverBuilder = ServerBuilder.forPort(port);
+        ServerBuilder serverBuilder = ServerBuilder
+                .forPort(port);
         for (BindableService service : services){
             serverBuilder.addService(service);
         }

@@ -1,4 +1,4 @@
-package unit;
+package unit.tests;
 
 import dataproviders.BalanceRangeProvider;
 import dataproviders.PeopleIdProvider;
