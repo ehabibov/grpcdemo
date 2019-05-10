@@ -1,16 +1,14 @@
 package rpc.services;
 
 import bindings.Person;
-import context.AppContext;
+import dao.PeopleDao;
+import dao.PeopleDaoImpl;
 import io.grpc.stub.StreamObserver;
-import org.springframework.context.ApplicationContext;
 import proto.*;
 import proto.GServiceGrpc.GServiceImplBase;
-import rest.PeopleRestClient;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,12 +17,10 @@ public class GService extends GServiceImplBase {
 
     private static final Logger logger = Logger.getLogger(GService.class.getName());
 
-    private ArrayList<Person> people;
+    private PeopleDao peopleDao;
 
     public GService() {
-        ApplicationContext ctx = AppContext.getApplicationContext();
-        PeopleRestClient peopleRestClient = (PeopleRestClient) ctx.getBean("personRestClient");
-        this.people = peopleRestClient.getPeople();
+        peopleDao = new PeopleDaoImpl();
     }
 
     @Override
@@ -38,7 +34,7 @@ public class GService extends GServiceImplBase {
 
     @Override
     public void listPeople(BalanceRange request, StreamObserver<proto.Person> responseObserver) {
-        for (bindings.Person personBinding : this.people){
+        for (bindings.Person personBinding : peopleDao.getAllPeople()){
             String balance = personBinding.getBalance();
             if (isInRange(convertBalance(balance), request)){
                 proto.Person personProto = proto.Person.newBuilder()
@@ -65,7 +61,7 @@ public class GService extends GServiceImplBase {
 
             @Override
             public void onNext(PersonIndex personIndex) {
-                for (bindings.Person personBinding : people){
+                for (bindings.Person personBinding : peopleDao.getAllPeople()){
                     if (personBinding.getIndex() == personIndex.getIndex()){
                         for (Person.Friend friendBinding : personBinding.getFriends()){
                             proto.PersonID personId = proto.PersonID.newBuilder()
