@@ -10,12 +10,11 @@ import proto.GServiceGrpc.GServiceImplBase;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class GService extends GServiceImplBase {
 
-    private static final Logger logger = Logger.getLogger(GService.class.getName());
+    private static final Logger logger = Logger.getLogger(GService.class);
 
     private PeopleDao peopleDao;
 
@@ -81,7 +80,7 @@ public class GService extends GServiceImplBase {
 
             @Override
             public void onError(Throwable throwable) {
-                logger.log(Level.WARNING, "Error during sending friends", throwable);
+                logger.warn("Error during sending friends", throwable);
             }
 
             @Override

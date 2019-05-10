@@ -8,11 +8,11 @@ import io.grpc.inprocess.InProcessServerBuilder;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class GrpcServer {
 
-    private static final Logger logger = Logger.getLogger(GrpcServer.class.getName());
+    private static final Logger logger = Logger.getLogger(GrpcServer.class);
 
     private Server server;
 

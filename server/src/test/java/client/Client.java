@@ -10,12 +10,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 public class Client {
 
-    private static final Logger logger = Logger.getLogger(Client.class.getName());
+    private static final Logger logger = Logger.getLogger(Client.class);
 
     private ManagedChannel channel;
     private GServiceGrpc.GServiceBlockingStub blockingStub;
@@ -86,7 +85,7 @@ public class Client {
         while (responseIterator.hasNext()){
             Person person = responseIterator.next();
             people.add(person);
-            String responseString = String.format("Received response: ID=[%d], name=[%s], age=[%d], email=[%s], company=[%s], balance=[%s]",
+            String responseString = String.format("Received streamed response: ID=[%d], name=[%s], age=[%d], email=[%s], company=[%s], balance=[%s]",
                     person.getId(), person.getName(), person.getAge(), person.getEmail(), person.getCompany(), person.getBalance());
             logger.info(responseString);
         }
@@ -102,14 +101,14 @@ public class Client {
             @Override
             public void onNext(Friend friend) {
                 friends.add(friend);
-                String responseString = String.format("Friend=[id=%d, name=%s, Person=[index=%d, name=%s]",
+                String responseString = String.format("Received streamed response: Friend=[id=%d, name=%s, Person=[index=%d, name=%s]",
                         friend.getId(), friend.getName(),friend.getPersonId().getId(), friend.getPersonId().getName());
                 logger.info(responseString);
             }
 
             @Override
             public void onError(Throwable throwable) {
-                logger.log(Level.WARNING, "Error during receiving friends", throwable);
+                logger.warn("Error during receiving friends", throwable);
                 finishLatch.countDown();
             }
 
@@ -121,7 +120,7 @@ public class Client {
 
         for (int index : indexes) {
             PersonIndex personIndex = PersonIndex.newBuilder().setIndex(index).build();
-            logger.info("Looking friends of person with index=" + index);
+            logger.info("Looking friends of person with index: " + index);
             requestObserver.onNext(personIndex);
         }
         requestObserver.onCompleted();
