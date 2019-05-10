@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class PeopleRestClient extends AbstractRestClient{
+public class PeopleRestClient extends AbstractRestClient {
 
     private static final Logger logger = Logger.getLogger(PeopleRestClient.class.getName());
 

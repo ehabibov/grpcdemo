@@ -40,7 +40,7 @@ public class ServerTest {
         client = clientRule.getClientInstance();
     }
 
-    @Test()
+    @Test
     public void testHello(){
         ServerHello hello = client.sendHello();
         assertEquals(hello.getServerMessage(), "Response: Hello!");

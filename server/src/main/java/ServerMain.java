@@ -5,7 +5,7 @@ import rpc.GrpcServer;
 public class ServerMain {
 
     public static void main(String[] args) {
-        ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("server-config.xml");
         GrpcServer server = (GrpcServer) ctx.getBean("server");
 
         server.start();

@@ -81,7 +81,6 @@ public class GService extends GServiceImplBase {
                         }
                     }
                 }
-
             }
 
             @Override
@@ -94,8 +93,6 @@ public class GService extends GServiceImplBase {
                 responseObserver.onCompleted();
             }
         };
-
-
     }
 
     private static double convertBalance(String balance){

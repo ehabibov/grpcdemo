@@ -48,7 +48,7 @@ public class GrpcServer {
         if (server != null) {
             try {
                 logger.info("Await termination...");
-                server.awaitTermination(20, TimeUnit.SECONDS);
+                server.awaitTermination(10, TimeUnit.SECONDS);
                 logger.info("Server terminated...");
             } catch (InterruptedException e) {
                 e.printStackTrace();
