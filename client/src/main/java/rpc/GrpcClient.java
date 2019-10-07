@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 public class GrpcClient {
 
     private static final Logger logger = Logger.getLogger(GrpcClient.class);
-
     private ManagedChannel channel;
     private GServiceGrpc.GServiceBlockingStub blockingStub;
     private GServiceGrpc.GServiceStub asyncStub;

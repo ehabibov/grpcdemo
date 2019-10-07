@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 public class GrpcServer {
 
     private static final Logger logger = Logger.getLogger(GrpcServer.class);
-
     private Server server;
 
     public GrpcServer(int port, List<BindableService> services) {

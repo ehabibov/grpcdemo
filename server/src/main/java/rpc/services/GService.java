@@ -15,11 +15,10 @@ import org.apache.log4j.Logger;
 public class GService extends GServiceImplBase {
 
     private static final Logger logger = Logger.getLogger(GService.class);
-
     private PeopleDao peopleDao;
 
     public GService() {
-        peopleDao = new PeopleDaoImpl();
+        this.peopleDao = new PeopleDaoImpl();
     }
 
     @Override
