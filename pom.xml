@@ -17,7 +17,7 @@
     <properties>
         <jar-with-dependency-name>${project.artifactId}-${project.version}-jwd</jar-with-dependency-name>
         <grpc-versions>1.19.0</grpc-versions>
-        <spring-versions>5.1.3.RELEASE</spring-versions>
+        <spring-versions>5.3.18</spring-versions>
     </properties>
 
     <dependencies>
